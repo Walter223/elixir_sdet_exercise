@@ -9,6 +9,7 @@ defmodule ElixirSdetExerciseTest do
   # Start hound session and destroy when tests are run
   hound_session()
   setup do
+    maximize_window(current_window_handle())
     navigate_to "https://facebook.com"
     unless element?(:link_text, "Create New Account") do
       navigate_to "https://facebook.com"
@@ -17,313 +18,309 @@ defmodule ElixirSdetExerciseTest do
     Loopers.check_for_element(".//div[text()='Sign Up']", 5)
   end
 
-  # test "Invalid Name Message Appears With Bad Data In First Name Field" do
-  #   good_email = "testermail#{Helpers.get_the_time}@gmail.com"
-  #   #fill in first name
-  #   Helpers.fill_first_name "    "
-  #   #fill in last name
-  #   Helpers.fill_last_name "Testerson"
-  #   #fill in email
-  #   Helpers.fill_email_1 good_email
-  #   #fill in email again
-  #   Helpers.fill_email_2 good_email
-  #   #fill in password
-  #   Helpers.fill_password "password123456"
-  #   #fill in month
-  #   Helpers.select_month "2"
-  #   # #fill in day
-  #   Helpers.select_date "5"
-  #   # #fill in year
-  #   Helpers.select_year "1979"
-  #   Helpers.select_male_gender
-  #   # # Now click the Sign Up Button
-  #   Helpers.click_sign_up_submit    
-  #   #assert that the error message shows up
-  #   assert element?(:xpath, ".//div[text()='What\’s your name?']")
-  # end
-
-  # test "Invalid Name Message Appears With Bad Data In Last Name Field" do
-  #   good_email = "testermail#{Helpers.get_the_time}@gmail.com"
-  #   #fill in first name
-  #   Helpers.fill_first_name "Test"
-  #   #fill in last name
-  #   Helpers.fill_last_name "      "
-  #   #fill in email
-  #   Helpers.fill_email_1 good_email
-  #   #fill in email again
-  #   Helpers.fill_email_2 good_email
-  #   #fill in password
-  #   Helpers.fill_password "password123456"
-  #   #fill in month
-  #   Helpers.select_month "2"
-  #   # #fill in day
-  #   Helpers.select_date "27"
-  #   # #fill in year
-  #   Helpers.select_year "1966"
-  #   Helpers.select_male_gender
-  #   # # Now click the Sign Up Button
-  #   Helpers.click_sign_up_submit
-  #   # click(find_element(:name,"websubmit"))
-  #   IO.puts "Looking for What's your name message"
-  #   #assert that the error message shows up
-  #   assert element?(:xpath, ".//div[text()='What\’s your name?']")
-  # end
-
-  # #this one is being difficult...
-  test "Names can't have too many periods message" do
-    good_email = "testermail#{Helpers.get_the_time}@gmail.com"
-    #fill in first name
-    Helpers.fill_first_name "Test"
-    #fill in last name
-    Helpers.fill_last_name "element.png"
-    #fill in email
+  test "Invalid Name Message Appears With Bad Data In First Name Field" do
+    good_email = Helpers.get_good_email
+    Helpers.fill_first_name "    "
+    Helpers.fill_last_name "Testerson"
     Helpers.fill_email_1 good_email
-    #fill in email again
     Helpers.fill_email_2 good_email
-    #fill in password
     Helpers.fill_password "password123456"
-    #fill in month
     Helpers.select_month "2"
-    # #fill in day
     Helpers.select_date "5"
-    # #fill in year
+    Helpers.select_year "1979"
+    Helpers.select_male_gender
+    Helpers.click_sign_up_submit
+    Loopers.check_for_element(".//div[text()='What\’s your name?']", 6)
+    try do
+      assert element?(:xpath, ".//div[text()='What\’s your name?']")
+    rescue
+      _error ->
+        Helpers.grab_screenshot "whitespace_lname_catch_shot_"
+        Loopers.check_for_element(".//div[text()='What\’s your name?']", 6)
+    end
+    assert element?(:xpath, ".//div[text()='What\’s your name?']")
+  end
+
+  test "Invalid name error for whitespace in last name field" do
+    good_email = Helpers.get_good_email
+    Helpers.fill_first_name "Test"
+    Helpers.fill_last_name "      "
+    Helpers.fill_email_1 good_email
+    Helpers.fill_email_2 good_email
+    Helpers.fill_password "password123456"
+    Helpers.select_month "2"
+    Helpers.select_date "27"
+    Helpers.select_year "1966"
+    Helpers.select_male_gender
+    Helpers.click_sign_up_submit
+    Loopers.check_for_element(".//div[text()='What\’s your name?']", 6)
+    try do
+      assert element?(:xpath, ".//div[text()='What\’s your name?']")
+    rescue
+      _error ->
+        Helpers.grab_screenshot "whitespace_lname_catch_shot_"
+        Loopers.check_for_element(".//div[text()='What\’s your name?']", 6)
+    end
+    assert element?(:xpath, ".//div[text()='What\’s your name?']")
+  end
+
+  test "Names can't have too many periods message" do
+    good_email = Helpers.get_good_email
+    Helpers.fill_first_name "Test"
+    Helpers.fill_last_name "element.png"
+    Helpers.fill_email_1 good_email
+    Helpers.fill_email_2 good_email
+    Helpers.fill_password "password123456"
+    Helpers.select_month "2"
+    Helpers.select_date "5"
     Helpers.select_year "1979"
     Helpers.select_custom_gender "6"
-    # # Now click the Sign Up Button
     Helpers.click_sign_up_submit
-    #check for error message
-    Loopers.check_for_element(".//*[@id='reg_error_inner']", 4)
-    # if element?(:id, "reg_error_inner") do
-    #   IO.puts "Invalid name message missing. Checking again."
-    #   :timer.sleep(2000)
-    #   IO.puts element?(:id, "reg_error_inner")
-    # end
-    # try do
-    #   error_code = find_element(:id, "reg_error_inner")
-    # rescue
-    #   _error ->
-    #     IO.puts "Going to try and grab that element once more..."
-    #     :timer.sleep(2000)
-    # end
-    error_code = find_element(:id, "reg_error_inner")
-    IO.puts error_code
-    #assert for message
+    Loopers.check_for_element(".//*[@id='reg_error_inner']", 6)
+    elem = find_element(:id, "reg_error_inner")
     try do
-      assert(visible_in_element?(error_code, ~r/Names on Facebook can't have too many periods. Learn more about our name policies./iu))
+      assert(visible_in_element?(elem, ~r/Names on Facebook can't have too many periods. Learn more about our name policies./iu))
     rescue
       _error ->
         Helpers.grab_screenshot "too_many_periods_catch_shot_"
-        IO.puts "Trying to assert once more..."
-        # assert(visible_in_element?(error_code, ~r/Names on Facebook can't have too many periods. Learn more about our name policies./iu))
+        Loopers.check_for_element(".//*[@id='reg_error_inner']", 6)
     end
-    #sleeping to try and get this to pass one more time
-    :timer.sleep(2000)
-    assert(visible_in_element?(error_code, ~r/Names on Facebook can't have too many periods. Learn more about our name policies./iu))
+    assert(visible_in_element?(elem, ~r/Names on Facebook can't have too many periods. Learn more about our name policies./iu))
   end
 
-  # test "Invalid phone number error message" do
-  #   #code
-  # end
+  test "Name requirement error message" do
+    good_email = Helpers.get_good_email
+    Helpers.fill_first_name "asdf"
+    Helpers.fill_last_name "asdf"
+    Helpers.fill_email_1 good_email
+    Helpers.fill_email_2 good_email
+    Helpers.fill_password "password123456"
+    Helpers.select_month "2"
+    Helpers.select_date "5"
+    Helpers.select_year "1979"
+    Helpers.select_custom_gender "6"
+    Helpers.click_sign_up_submit
+    Loopers.check_for_element(".//*[@id='reg_error_inner']", 6)
+    elem = find_element(:id, "reg_error_inner")
+    try do
+      assert(visible_in_element?(elem, ~r/We require everyone to use the name they use in everyday life, what their friends call them, on Facebook. Learn more about our name policies./iu))
+    rescue
+      _error ->
+        Helpers.grab_screenshot "name_req_catch_shot_"
+        Loopers.check_for_element(".//*[@id='reg_error_inner']", 6)
+    end
+    assert(visible_in_element?(elem, ~r/We require everyone to use the name they use in everyday life, what their friends call them, on Facebook. Learn more about our name policies./iu))
+  end
 
-  # test "Email mismatch test" do
-  #   good_email = "testermail#{Helpers.get_the_time}@gmail.com"
-  #   good_email_2 = "testermail2#{Helpers.get_the_time}@gmail.com"
-  #   #fill in first name
-  #   Helpers.fill_first_name "Test"
-  #   #fill in last name
-  #   Helpers.fill_last_name "element.png"
-  #   #fill in email
-  #   Helpers.fill_email_1 good_email
-  #   #fill in email again
-  #   Helpers.fill_email_2 good_email_2
-  #   #fill in password
-  #   Helpers.fill_password "password123456"
-  #   #fill in month
-  #   Helpers.select_month "12"
-  #   # #fill in day
-  #   Helpers.select_date "31"
-  #   # #fill in year
-  #   Helpers.select_year "2020"
-  #   Helpers.select_custom_gender "6"
-  #   # # Now click the Sign Up Button
-  #   Helpers.click_sign_up_submit
-  #   #check for error message
-  #   :timer.sleep(2000)
-  #   #Need assertion
-  #   assert element?(:xpath, ".//div[text()='Your emails do not match. Please try again.']")
-  # end
+  test "Invalid phone number error message" do
+    Helpers.fill_first_name "Test"
+    Helpers.fill_last_name "Mismatchmail"
+    Helpers.fill_email_1 "801-555-55555"
+    Helpers.fill_password "password123456"
+    Helpers.select_month "12"
+    Helpers.select_date "31"
+    Helpers.select_year "2020"
+    Helpers.select_custom_gender "6"
+    Helpers.click_sign_up_submit
+    Loopers.check_for_element(".//div[text()='Please enter a valid mobile number or email address.']", 6)
+    try do
+      assert element?(:xpath, ".//div[text()='Please enter a valid mobile number or email address.']")
+    rescue
+      _error ->
+        Helpers.grab_screenshot "bad_phone_number_catch_shot_"
+        Loopers.check_for_element(".//div[text()='Please enter a valid mobile number or email address.']", 6)
+    end
+    assert element?(:xpath, ".//div[text()='Please enter a valid mobile number or email address.']")
+  end
 
-  # # test "Setting invalid birthday" do
-  # #   #code
-  # # end
+  test "Email mismatch test" do
+    good_email = Helpers.get_good_email
+    good_email_2 = Helpers.get_good_email
+    Helpers.fill_first_name "Test"
+    Helpers.fill_last_name "Mismatchmail"
+    Helpers.fill_email_1 good_email
+    Helpers.fill_email_2 good_email_2
+    Helpers.fill_password "password123456"
+    Helpers.select_month "12"
+    Helpers.select_date "31"
+    Helpers.select_year "2020"
+    Helpers.select_custom_gender "6"
+    Helpers.click_sign_up_submit
+    Loopers.check_for_element(".//div[text()='Your emails do not match. Please try again.']", 4)
+    try do
+      assert element?(:xpath, ".//div[text()='Your emails do not match. Please try again.']")
+    rescue
+      _error ->
+        Helpers.grab_screenshot "email_mismatch_catch_shot_"
+        Loopers.check_for_element(".//div[text()='Your emails do not match. Please try again.']", 4)
+    end
+    assert element?(:xpath, ".//div[text()='Your emails do not match. Please try again.']")
+  end
 
-  # test "Password not secure enough error message" do
-  #   good_email = "testermail#{Helpers.get_the_time}@gmail.com"
-  #   #fill in first name
-  #   Helpers.fill_first_name "Test"
-  #   #fill in last name
-  #   Helpers.fill_last_name "Testerson"
-  #   #fill in email
-  #   Helpers.fill_email_1 good_email
-  #   #fill in email again
-  #   Helpers.fill_email_2 good_email
-  #   #fill in password
-  #   Helpers.fill_password "password"
-  #   #fill in month
-  #   Helpers.select_month "2"
-  #   # #fill in day
-  #   Helpers.select_date "5"
-  #   # #fill in year
-  #   Helpers.select_year "1989"
-  #   Helpers.select_female_gender
-  #   # # Now click the Sign Up Button
-  #   Helpers.click_sign_up_submit
-  #   #check for error message
-  #   if element?(:id, "reg_error_inner") do
-  #     IO.puts "Invalid password message missing. Checking again."
-  #     Helpers.grab_screenshot "pass_not_secure_enough_"
-  #     :timer.sleep(1000)
-  #   end
-  #   #assert for message
-  #   assert(element?(:xpath,".//div[@id='reg_error_inner' and text()='Please choose a more secure password. It should be longer than 6 characters, unique to you, and difficult for others to guess.']"))
-  # end
- 
+  test "Password not secure enough error message" do
+    good_email = Helpers.get_good_email
+    Helpers.fill_first_name "Test"
+    Helpers.fill_last_name "Testerson"
+    Helpers.fill_email_1 good_email
+    Helpers.fill_email_2 good_email
+    Helpers.fill_password "password"
+    Helpers.select_month "2"
+    Helpers.select_date "5"
+    Helpers.select_year "1989"
+    Helpers.select_female_gender
+    Helpers.click_sign_up_submit
+    Loopers.check_for_element(".//*[@id='reg_error_inner']", 6)
+    try do
+      assert(element?(:xpath,".//div[@id='reg_error_inner' and text()='Please choose a more secure password. It should be longer than 6 characters, unique to you, and difficult for others to guess.']"))
+    rescue
+      _error ->
+        Helpers.grab_screenshot "insecure_pass_catch_shot_"
+    end
+    assert(element?(:xpath,".//div[@id='reg_error_inner' and text()='Please choose a more secure password. It should be longer than 6 characters, unique to you, and difficult for others to guess.']"))
+  end
   
-  # test "Invalid email message with bad data" do
-  #   bad_email = "testermail#{Helpers.get_the_time}@mailinator.com"
-  #   #fill in first name
-  #   Helpers.fill_first_name "Test"
-  #   #fill in last name
-  #   Helpers.fill_last_name "Testerson"
-  #   #fill in email
-  #   Helpers.fill_email_1 bad_email
-  #   #fill in email again
-  #   Helpers.fill_email_2 bad_email
-  #   #fill in password
-  #   Helpers.fill_password "password123456"
-  #   #fill in month
-  #   Helpers.select_month "2"
-  #   # #fill in day
-  #   Helpers.select_date "5"
-  #   # #fill in year
-  #   Helpers.select_year "1989"
-  #   Helpers.select_female_gender
-  #   # # Now click the Sign Up Button
-  #   Helpers.click_sign_up_submit
-  #   #check for error message
-  #   if element?(:id, "reg_error_inner") do
-  #     IO.puts "Invalid Email message missing. Checking again."
-  #     Helpers.grab_screenshot "bad_email_"
-  #     :timer.sleep(1000)
-  #   end
-  #   #assert for message
-  #   assert(element?(:xpath,".//div[@id='reg_error_inner' and text()='You have entered an invalid email. Please check your email address and try again.']"))
-  # end
-
-  # test "Invalid Birthday message with bad data" do
-  #   good_email = "testermail#{Helpers.get_the_time}@gmail.com"
-  #   #fill in first name
-  #   Helpers.fill_first_name "Test"
-  #   #fill in last name
-  #   Helpers.fill_last_name "Testerson"
-  #   #fill in email
-  #   Helpers.fill_email_1 good_email
-  #   #fill in email again
-  #   Helpers.fill_email_2 good_email
-  #   #fill in password
-  #   Helpers.fill_password "password123234"
-  #   #fill in month
-  #   Helpers.select_month "12"
-  #   # #fill in day
-  #   Helpers.select_date "31"
-  #   # #fill in year
-  #   Helpers.select_year "2020"
-  #   Helpers.select_female_gender
-  #   # # Now click the Sign Up Button
-  #   Helpers.click_sign_up_submit
-    
-  #   if element?(:xpath, ".//*[text()='It looks like you entered the wrong info. Please be sure to use your real birthday.']") do
-  #     Helpers.grab_screenshot "bad_birthday_missing_"
-  #     IO.puts "Invalid birthday message missing. Checking again."
-  #     :timer.sleep(1000)
-  #   end
-  #   #assert error message
-  #   assert element?(:xpath, ".//*[text()='It looks like you entered the wrong info. Please be sure to use your real birthday.']")
-  # end
+  test "Invalid email message with bad data" do
+    bad_email = Helpers.get_bad_email
+    Helpers.fill_first_name "Test"
+    Helpers.fill_last_name "Testerson"
+    Helpers.fill_email_1 bad_email
+    Helpers.fill_email_2 bad_email
+    Helpers.fill_password "password123456"
+    Helpers.select_month "2"
+    Helpers.select_date "5"
+    Helpers.select_year "1989"
+    Helpers.select_female_gender
+    Helpers.click_sign_up_submit
+    Loopers.check_for_element(".//*[@id='reg_error_inner']", 6)
+    try do
+      assert(element?(:xpath,".//div[@id='reg_error_inner' and text()='You have entered an invalid email. Please check your email address and try again.']"))
+    rescue
+      _error ->
+        Helpers.grab_screenshot "invalid_email_catch_shot_"
+        Loopers.check_for_element(".//*[@id='reg_error_inner']", 6)
+    end
+    assert(element?(:xpath,".//div[@id='reg_error_inner' and text()='You have entered an invalid email. Please check your email address and try again.']"))
+  end
   
-  # test "Not selecting Gender error message" do
-  #   good_email = "testermail#{Helpers.get_the_time}@gmail.com"
-  #   #fill in first name
-  #   Helpers.fill_first_name "Test"
-  #   #fill in last name
-  #   Helpers.fill_last_name "Testerson"
-  #   #fill in email
-  #   Helpers.fill_email_1 good_email
-  #   #fill in email again
-  #   Helpers.fill_email_2 good_email
-  #   #fill in password
-  #   Helpers.fill_password "password123234"
-  #   #fill in month
-  #   Helpers.select_month "12"
-  #   # #fill in day
-  #   Helpers.select_date "31"
-  #   # #fill in year
-  #   Helpers.select_year "2020"
-  #   # Now click the Sign Up Button
-  #   Helpers.click_sign_up_submit
-  #   try do
-  #     assert element?(:xpath, ".//*[text()='Please choose a gender. You can change who can see this later.']")
-  #   rescue
-  #     error ->
-  #       Helpers.grab_screenshot "gender_failure_catch_shot_"
-  #       IO.puts "Taking screenshot of forced failure"
-  #       raise error
-  #   end
-  # end
-  
-  # test "Test the Your Age field with 400" do
-  #   good_email = Helpers.get_good_email
-  #   #fill in first name
-  #   Helpers.fill_first_name "Test"
-  #   #fill in last name
-  #   Helpers.fill_last_name "Testerson"
-  #   #fill in email
-  #   Helpers.fill_email_1 good_email
-  #   #fill in email again
-  #   Helpers.fill_email_2 good_email
-  #   #fill in password
-  #   Helpers.fill_password "password123234"
-  #   #fill in month
-  #   Helpers.select_month "12"
-  #   # #fill in day
-  #   Helpers.select_date "31"
-  #   # #fill in year
-  #   Helpers.select_year "0"
-  #   # Now click the Sign Up Button
-  #   Helpers.click_sign_up_submit
-  #   # Fill out age input
-  #   try do
-  #     Helpers.fill_out_age_input 400
-  #   rescue
-  #     _error ->
-  #       Helpers.grab_screenshot "age_input_missing_catch_shot_"
-  #       IO.puts "Taking screenshot of forced failure"
-  #       Helpers.click_sign_up_submit
-  #       Helpers.click_sign_up_submit
-  #       Helpers.click_sign_up_submit
-  #   after
-  #     Helpers.fill_out_age_input 400
-  #   end
-  #   # Now click the Sign Up Button
-  #   Helpers.click_sign_up_submit
-  #   try do
-  #     assert element?(:xpath, ".//*[text()='Please enter your age.']")
-  #   rescue
-  #     error ->
-  #       Helpers.grab_screenshot "age_input_error_catch_shot_"
-  #       IO.puts "Taking screenshot of forced failure"
-  #       raise error
-  #   end
-  # end
+  test "Setting invalid birthday day" do
+    good_email = Helpers.get_good_email
+    Helpers.fill_first_name "Test"
+    Helpers.fill_last_name "Testerson"
+    Helpers.fill_email_1 good_email
+    Helpers.fill_email_2 good_email
+    Helpers.fill_password "password123234"
+    Helpers.select_month "12"
+    Helpers.select_date "0"
+    Helpers.select_year "1988"
+    Helpers.click_sign_up_submit
+    Helpers.click_sign_up_submit
+    Helpers.click_sign_up_submit
+    Helpers.click_sign_up_submit
+    try do
+      assert element?(:xpath, ".//*[text()='Please enter your age.']")
+    rescue
+      _error ->
+        Helpers.grab_screenshot "invalid_day_catch_shot_"
+    end
+  end
 
+  test "Setting invalid birthday month" do
+    good_email = Helpers.get_good_email
+    Helpers.fill_first_name "Test"
+    Helpers.fill_last_name "Testerson"
+    Helpers.fill_email_1 good_email
+    Helpers.fill_email_2 good_email
+    Helpers.fill_password "password123234"
+    Helpers.select_month "0"
+    Helpers.select_date "31"
+    Helpers.select_year "1966"
+    Helpers.click_sign_up_submit
+    Helpers.click_sign_up_submit
+    Helpers.click_sign_up_submit
+    Helpers.click_sign_up_submit
+    try do
+      assert element?(:xpath, ".//*[text()='Please enter your age.']")
+    rescue
+      _error ->
+        Helpers.grab_screenshot "invalid_month_catch_shot_"
+    end
+  end
+
+  test "Setting age field to 400" do
+    good_email = Helpers.get_good_email
+    Helpers.fill_first_name "Test"
+    Helpers.fill_last_name "Testerson"
+    Helpers.fill_email_1 good_email
+    Helpers.fill_email_2 good_email
+    Helpers.fill_password "password123234"
+    Helpers.select_month "12"
+    Helpers.select_date "31"
+    Helpers.select_year "0"
+    Helpers.click_sign_up_submit
+    Helpers.click_sign_up_submit
+    Helpers.click_sign_up_submit
+    Helpers.click_sign_up_submit
+    try do
+      Helpers.fill_out_age_input 400
+    rescue
+      _error ->
+        Helpers.grab_screenshot "age_input_missing_catch_shot_"
+    after
+      Helpers.fill_out_age_input 400
+    end
+    Helpers.click_sign_up_submit
+    try do
+      assert element?(:xpath, ".//*[text()='Please enter your age.']")
+    rescue
+      error ->
+        Helpers.grab_screenshot "age_input_error_catch_shot_"
+        IO.puts "Taking screenshot of forced failure"
+        raise error
+    end
+  end
+
+  test "Invalid Birthday from future message with bad data" do
+    good_email = Helpers.get_good_email
+    Helpers.fill_first_name "Test"
+    Helpers.fill_last_name "Testerson"
+    Helpers.fill_email_1 good_email
+    Helpers.fill_email_2 good_email
+    Helpers.fill_password "password123234"
+    Helpers.select_month "12"
+    Helpers.select_date "31"
+    Helpers.select_year "2020"
+    Helpers.select_female_gender
+    Helpers.click_sign_up_submit
+    Loopers.check_for_element(".//*[text()='It looks like you entered the wrong info. Please be sure to use your real birthday.']", 6)
+    try do
+      assert element?(:xpath, ".//*[text()='It looks like you entered the wrong info. Please be sure to use your real birthday.']")
+    rescue
+      _error ->
+        Helpers.grab_screenshot "future_baby_catch_shot_"
+        Loopers.check_for_element(".//*[text()='It looks like you entered the wrong info. Please be sure to use your real birthday.']", 6)
+    end
+    assert element?(:xpath, ".//*[text()='It looks like you entered the wrong info. Please be sure to use your real birthday.']")
+  end
+  
+  test "Not selecting Gender error message" do
+    good_email = Helpers.get_good_email
+    Helpers.fill_first_name "Test"
+    Helpers.fill_last_name "Testerson"
+    Helpers.fill_email_1 good_email
+    Helpers.fill_email_2 good_email
+    Helpers.fill_password "password123234"
+    Helpers.select_month "12"
+    Helpers.select_date "31"
+    Helpers.select_year "2020"
+    Helpers.click_sign_up_submit
+    Loopers.check_for_element(".//*[text()='Please choose a gender. You can change who can see this later.']", 6)
+    try do
+      assert element?(:xpath, ".//*[text()='Please choose a gender. You can change who can see this later.']")
+    rescue
+      _error ->
+        Helpers.grab_screenshot "gender_failure_catch_shot_"
+        Loopers.check_for_element(".//*[text()='Please choose a gender. You can change who can see this later.']", 6)
+    end
+    assert element?(:xpath, ".//*[text()='Please choose a gender. You can change who can see this later.']")
+  end
 end

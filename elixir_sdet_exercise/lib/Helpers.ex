@@ -109,5 +109,9 @@ defmodule Helpers do
     "testermail#{get_the_time()}@gmail.com"
   end
 
+  def get_bad_email do
+    "testerbadmail#{get_the_time()}@mailinator.com"
+  end
+
 
 end
