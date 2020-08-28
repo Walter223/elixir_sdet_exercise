@@ -10,13 +10,6 @@ defmodule Loopers do
     :ok
   end
 
-  
-
-  # def click_until(element_to_click, element_to_check_for, times) when false or times > 0 do
-  #   click(find_element(:xpath, "#{element_to_click}"))
-  #   element?(:xpath, "#{element_to_check_for}")
-  # end
-
   def click_until(element_to_click, element_to_check_for, times) do
     if times > 0 and element?(:xpath, "#{element_to_check_for}") == false do
       click(find_element(:xpath, "#{element_to_click}"))

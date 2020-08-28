@@ -394,9 +394,32 @@ defmodule ElixirSdetExerciseTest do
     rescue
       _error ->
         Helpers.grab_screenshot "gender_failure_catch_shot_"
-        IO.puts "Looping again"
         Loopers.check_for_element(".//*[text()='Please choose a gender. You can change who can see this later.']", 6)
     end
     assert element?(:xpath, ".//*[text()='Please choose a gender. You can change who can see this later.']")
+  end
+
+  @tag :gender_test
+  test "Not selecting pronoun error message" do
+    good_email = Helpers.get_good_email
+    Helpers.fill_first_name "Test"
+    Helpers.fill_last_name "Testerson"
+    Helpers.fill_email_1 good_email
+    Helpers.fill_email_2 good_email
+    Helpers.fill_password "password123234"
+    Helpers.select_month "12"
+    Helpers.select_date "31"
+    Helpers.select_year "1967"
+    Helpers.select_custom_gender "0"
+    Helpers.click_sign_up_submit
+    Loopers.check_for_element(".//*[text()='Please select your pronoun.']", 6)
+    try do
+      assert element?(:xpath, ".//*[text()='Please select your pronoun.']")
+    rescue
+      _error ->
+        Helpers.grab_screenshot "pronoun_catch_shot_"
+        Loopers.check_for_element(".//*[text()='Please select your pronoun.']", 6)
+    end
+    assert element?(:xpath, ".//*[text()='Please select your pronoun.']")
   end
 end

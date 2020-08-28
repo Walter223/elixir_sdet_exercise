@@ -1,6 +1,5 @@
 defmodule Helpers do
   use Hound.Helpers
-  # require TimeGen
 
   def get_the_time do
     hour = to_string(Time.utc_now.hour)
@@ -25,9 +24,9 @@ defmodule Helpers do
   end
 
   def fill_email_2 email2 do
-    unless element?(:name, "reg_email_confirmation__") do
-      :timer.sleep(1500)
-    end
+    # unless element?(:name, "reg_email_confirmation__") do
+    #   :timer.sleep(1500)
+    # end
     click_by("name", "reg_email_confirmation__")
     send_text(email2)
   end
@@ -76,13 +75,16 @@ defmodule Helpers do
   end
 
   #as of right now, the pref_prounoun_values are as follows:
+  #0 = No gender is selected
   #1 = She: "\Wish her a happy birthday!"\
   #2 = He: "\Wish him a happy birthday!"\
   #6 = They: "\Wish them a happy birthday!"\
   def select_custom_gender pref_pronoun_val do
     click_by("xpath", ".//span/label[text()='Custom']")
-    click_by("name", "preferred_pronoun")
-    click_by("xpath", ".//div[@id='custom_gender_container']/div/select/option[@value='#{pref_pronoun_val}']")
+    unless pref_pronoun_val == "0" do
+      click_by("name", "preferred_pronoun")
+      click_by("xpath", ".//div[@id='custom_gender_container']/div/select/option[@value='#{pref_pronoun_val}']")
+    end
   end
 
   def click_sign_up_submit do
