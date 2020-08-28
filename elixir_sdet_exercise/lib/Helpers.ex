@@ -113,5 +113,22 @@ defmodule Helpers do
     "testerbadmail#{get_the_time()}@mailinator.com"
   end
 
+  def click_create_new_account do
+    click(find_element(:link_text, "Create New Account"))
+  end
+
+  def fill_out_login_email email do
+    click(find_element(:id, "email"))
+    send_text(email)
+  end
+
+  def fill_out_login_pass pass do
+    click(find_element(:id, "pass"))
+    send_text(pass)
+  end
+
+  def click_login_button do
+    click(find_element(:link_text, "Log In"))
+  end
 
 end
