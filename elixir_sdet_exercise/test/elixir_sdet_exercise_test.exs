@@ -237,7 +237,7 @@ defmodule ElixirSdetExerciseTest do
     Helpers.select_year "1989"
     Helpers.select_female_gender
     Helpers.click_sign_up_submit
-    Loopers.check_for_element(".//*[@id='reg_error_inner']", 6)
+    Loopers.check_for_element(".//*[@id='reg_error_inner']", 10)
     try do
       assert(element?(:xpath,".//div[@id='reg_error_inner' and text()='Please choose a more secure password. It should be longer than 6 characters, unique to you, and difficult for others to guess.']"))
     rescue
@@ -261,7 +261,7 @@ defmodule ElixirSdetExerciseTest do
     Helpers.select_year "1991"
     Helpers.select_female_gender
     Helpers.click_sign_up_submit
-    Loopers.check_for_element(".//*[@id='reg_error_inner']", 6)
+    Loopers.check_for_element(".//*[@id='reg_error_inner']", 10)
     try do
       assert(element?(:xpath,".//div[@id='reg_error_inner' and text()='Your password must be at least 6 characters long. Please try another.']"))
     rescue
