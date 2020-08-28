@@ -9,7 +9,7 @@ use Mix.Config
 # third-party users, it should be done in your "mix.exs" file.
 
 config :hound, driver: "chrome_driver"
-
+config :ex_unit_notifier, notifier: ExUnitNotifier.Notifiers.TerminalNotifier
 # You can configure your application as:
 #
 #     config :elixir_sdet_exercise, key: :value

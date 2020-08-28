@@ -8,7 +8,6 @@ defmodule ElixirSdetExercise.MixProject do
       elixir: "~> 1.8",
       start_permanent: Mix.env() == :prod,
       deps: deps()
-      # aliases: aliases()
     ]
   end
 
@@ -19,17 +18,11 @@ defmodule ElixirSdetExercise.MixProject do
     ]
   end
 
-  # # Aliases for specific tasks
-  # def aliases do
-  #   [
-  #     run_and_rerun_all_failed: (cmd mix test, cmd mix test --failed)
-  #   ]
-  # end
-
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:hound, "~> 1.0"}
+      {:hound, "~> 1.0"},
+      {:ex_unit_notifier, "~> 0.1", only: :test}
       # {:dep_from_hexpm, "~> 0.3.0"},
       # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"}
     ]
