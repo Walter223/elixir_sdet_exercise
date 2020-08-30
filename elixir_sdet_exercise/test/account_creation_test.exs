@@ -1,7 +1,7 @@
-defmodule ElixirSdetExerciseTest do
+defmodule AccountCreationTest do
   # Import helpers
-  require Helpers
   require Loopers
+  require AccountCreationPage
   use Hound.Helpers
   use ExUnit.Case
   
@@ -21,23 +21,23 @@ defmodule ElixirSdetExerciseTest do
     unless element?(:link_text, "Create New Account") do
       navigate_to "https://facebook.com"
     end
-    Helpers.click_create_new_account
+    AccountCreationPage.click_create_new_account
     Loopers.check_for_element(".//div[text()='Sign Up']", 5)
   end
 
   @tag :name_test
   test "Invalid Name Message Appears With Bad Data In First Name Field" do
     good_email = Helpers.get_good_email
-    Helpers.fill_first_name "    "
-    Helpers.fill_last_name "Testerson"
-    Helpers.fill_email_1 good_email
-    Helpers.fill_email_2 good_email
-    Helpers.fill_password "password123456"
-    Helpers.select_month "2"
-    Helpers.select_date "5"
-    Helpers.select_year "1979"
-    Helpers.select_male_gender
-    Helpers.click_sign_up_submit
+    AccountCreationPage.fill_first_name "    "
+    AccountCreationPage.fill_last_name "Testerson"
+    AccountCreationPage.fill_email_1 good_email
+    AccountCreationPage.fill_email_2 good_email
+    AccountCreationPage.fill_password "password123456"
+    AccountCreationPage.select_month "2"
+    AccountCreationPage.select_date "5"
+    AccountCreationPage.select_year "1979"
+    AccountCreationPage.select_male_gender
+    AccountCreationPage.click_sign_up_submit
     Loopers.check_for_element(".//div[text()='What\’s your name?']", 6)
     try do
       assert element?(:xpath, ".//div[text()='What\’s your name?']")
@@ -52,16 +52,16 @@ defmodule ElixirSdetExerciseTest do
   @tag :name_test
   test "Invalid name error for whitespace in last name field" do
     good_email = Helpers.get_good_email
-    Helpers.fill_first_name "Test"
-    Helpers.fill_last_name "      "
-    Helpers.fill_email_1 good_email
-    Helpers.fill_email_2 good_email
-    Helpers.fill_password "password123456"
-    Helpers.select_month "2"
-    Helpers.select_date "27"
-    Helpers.select_year "1966"
-    Helpers.select_male_gender
-    Helpers.click_sign_up_submit
+    AccountCreationPage.fill_first_name "Test"
+    AccountCreationPage.fill_last_name "      "
+    AccountCreationPage.fill_email_1 good_email
+    AccountCreationPage.fill_email_2 good_email
+    AccountCreationPage.fill_password "password123456"
+    AccountCreationPage.select_month "2"
+    AccountCreationPage.select_date "27"
+    AccountCreationPage.select_year "1966"
+    AccountCreationPage.select_male_gender
+    AccountCreationPage.click_sign_up_submit
     Loopers.check_for_element(".//div[text()='What\’s your name?']", 6)
     try do
       assert element?(:xpath, ".//div[text()='What\’s your name?']")
@@ -76,16 +76,16 @@ defmodule ElixirSdetExerciseTest do
   @tag :name_test
   test "Names can't have too many periods message" do
     good_email = Helpers.get_good_email
-    Helpers.fill_first_name "Test"
-    Helpers.fill_last_name "element.png"
-    Helpers.fill_email_1 good_email
-    Helpers.fill_email_2 good_email
-    Helpers.fill_password "password123456"
-    Helpers.select_month "2"
-    Helpers.select_date "5"
-    Helpers.select_year "1979"
-    Helpers.select_custom_gender "6"
-    Helpers.click_sign_up_submit
+    AccountCreationPage.fill_first_name "Test"
+    AccountCreationPage.fill_last_name "element.png"
+    AccountCreationPage.fill_email_1 good_email
+    AccountCreationPage.fill_email_2 good_email
+    AccountCreationPage.fill_password "password123456"
+    AccountCreationPage.select_month "2"
+    AccountCreationPage.select_date "5"
+    AccountCreationPage.select_year "1979"
+    AccountCreationPage.select_custom_gender "6"
+    AccountCreationPage.click_sign_up_submit
     Loopers.check_for_element(".//*[@id='reg_error_inner']", 8)
     elem = find_element(:id, "reg_error_inner")
     try do
@@ -102,16 +102,16 @@ defmodule ElixirSdetExerciseTest do
   @tag :name_test
   test "Names can't have too many punctuation marks message" do
     good_email = Helpers.get_good_email
-    Helpers.fill_first_name "Test"
-    Helpers.fill_last_name "element...png"
-    Helpers.fill_email_1 good_email
-    Helpers.fill_email_2 good_email
-    Helpers.fill_password "password123456"
-    Helpers.select_month "2"
-    Helpers.select_date "5"
-    Helpers.select_year "1979"
-    Helpers.select_custom_gender "6"
-    Helpers.click_sign_up_submit
+    AccountCreationPage.fill_first_name "Test"
+    AccountCreationPage.fill_last_name "element...png"
+    AccountCreationPage.fill_email_1 good_email
+    AccountCreationPage.fill_email_2 good_email
+    AccountCreationPage.fill_password "password123456"
+    AccountCreationPage.select_month "2"
+    AccountCreationPage.select_date "5"
+    AccountCreationPage.select_year "1979"
+    AccountCreationPage.select_custom_gender "6"
+    AccountCreationPage.click_sign_up_submit
     Loopers.check_for_element(".//*[@id='reg_error_inner']", 8)
     elem = find_element(:id, "reg_error_inner")
     try do
@@ -128,16 +128,16 @@ defmodule ElixirSdetExerciseTest do
   @tag :name_test
   test "Name requirement error message" do
     good_email = Helpers.get_good_email
-    Helpers.fill_first_name "asdf"
-    Helpers.fill_last_name "asdf"
-    Helpers.fill_email_1 good_email
-    Helpers.fill_email_2 good_email
-    Helpers.fill_password "password123456"
-    Helpers.select_month "2"
-    Helpers.select_date "5"
-    Helpers.select_year "1979"
-    Helpers.select_custom_gender "6"
-    Helpers.click_sign_up_submit
+    AccountCreationPage.fill_first_name "asdf"
+    AccountCreationPage.fill_last_name "asdf"
+    AccountCreationPage.fill_email_1 good_email
+    AccountCreationPage.fill_email_2 good_email
+    AccountCreationPage.fill_password "password123456"
+    AccountCreationPage.select_month "2"
+    AccountCreationPage.select_date "5"
+    AccountCreationPage.select_year "1979"
+    AccountCreationPage.select_custom_gender "6"
+    AccountCreationPage.click_sign_up_submit
     Loopers.check_for_element(".//*[@id='reg_error_inner']", 6)
     elem = find_element(:id, "reg_error_inner")
     try do
@@ -153,15 +153,15 @@ defmodule ElixirSdetExerciseTest do
 
   @tag :phone_test
   test "Invalid phone number error message" do
-    Helpers.fill_first_name "Test"
-    Helpers.fill_last_name "Mismatchmail"
-    Helpers.fill_email_1 "801-555-55555"
-    Helpers.fill_password "password123456"
-    Helpers.select_month "12"
-    Helpers.select_date "31"
-    Helpers.select_year "2000"
-    Helpers.select_custom_gender "6"
-    Helpers.click_sign_up_submit
+    AccountCreationPage.fill_first_name "Test"
+    AccountCreationPage.fill_last_name "Mismatchmail"
+    AccountCreationPage.fill_email_1 "801-555-55555"
+    AccountCreationPage.fill_password "password123456"
+    AccountCreationPage.select_month "12"
+    AccountCreationPage.select_date "31"
+    AccountCreationPage.select_year "2000"
+    AccountCreationPage.select_custom_gender "6"
+    AccountCreationPage.click_sign_up_submit
     Loopers.check_for_element(".//div[text()='Please enter a valid mobile number or email address.']", 6)
     try do
       assert element?(:xpath, ".//div[text()='Please enter a valid mobile number or email address.']")
@@ -178,16 +178,16 @@ defmodule ElixirSdetExerciseTest do
   test "Email mismatch test" do
     good_email = Helpers.get_good_email
     bad_email = Helpers.get_bad_email
-    Helpers.fill_first_name "Test"
-    Helpers.fill_last_name "Mismatchmail"
-    Helpers.fill_email_1 good_email
-    Helpers.fill_email_2 bad_email
-    Helpers.fill_password "password123456"
-    Helpers.select_month "12"
-    Helpers.select_date "31"
-    Helpers.select_year "1981"
-    Helpers.select_custom_gender "6"
-    Helpers.click_sign_up_submit
+    AccountCreationPage.fill_first_name "Test"
+    AccountCreationPage.fill_last_name "Mismatchmail"
+    AccountCreationPage.fill_email_1 good_email
+    AccountCreationPage.fill_email_2 bad_email
+    AccountCreationPage.fill_password "password123456"
+    AccountCreationPage.select_month "12"
+    AccountCreationPage.select_date "31"
+    AccountCreationPage.select_year "1981"
+    AccountCreationPage.select_custom_gender "6"
+    AccountCreationPage.click_sign_up_submit
     Loopers.check_for_element(".//div[text()='Your emails do not match. Please try again.']", 4)
     try do
       assert element?(:xpath, ".//div[text()='Your emails do not match. Please try again.']")
@@ -203,16 +203,16 @@ defmodule ElixirSdetExerciseTest do
   @tag :email_test
   test "Invalid email message with bad data" do
     bad_email = Helpers.get_bad_email
-    Helpers.fill_first_name "Test"
-    Helpers.fill_last_name "Testerson"
-    Helpers.fill_email_1 bad_email
-    Helpers.fill_email_2 bad_email
-    Helpers.fill_password "password123456"
-    Helpers.select_month "2"
-    Helpers.select_date "5"
-    Helpers.select_year "1989"
-    Helpers.select_female_gender
-    Helpers.click_sign_up_submit
+    AccountCreationPage.fill_first_name "Test"
+    AccountCreationPage.fill_last_name "Testerson"
+    AccountCreationPage.fill_email_1 bad_email
+    AccountCreationPage.fill_email_2 bad_email
+    AccountCreationPage.fill_password "password123456"
+    AccountCreationPage.select_month "2"
+    AccountCreationPage.select_date "5"
+    AccountCreationPage.select_year "1989"
+    AccountCreationPage.select_female_gender
+    AccountCreationPage.click_sign_up_submit
     Loopers.check_for_element(".//*[@id='reg_error_inner']", 6)
     try do
       assert(element?(:xpath,".//div[@id='reg_error_inner' and text()='You have entered an invalid email. Please check your email address and try again.']"))
@@ -227,16 +227,16 @@ defmodule ElixirSdetExerciseTest do
   @tag :password_test
   test "Password not secure enough error message" do
     good_email = Helpers.get_good_email
-    Helpers.fill_first_name "Test"
-    Helpers.fill_last_name "Testerson"
-    Helpers.fill_email_1 good_email
-    Helpers.fill_email_2 good_email
-    Helpers.fill_password "password"
-    Helpers.select_month "2"
-    Helpers.select_date "5"
-    Helpers.select_year "1989"
-    Helpers.select_female_gender
-    Helpers.click_sign_up_submit
+    AccountCreationPage.fill_first_name "Test"
+    AccountCreationPage.fill_last_name "Testerson"
+    AccountCreationPage.fill_email_1 good_email
+    AccountCreationPage.fill_email_2 good_email
+    AccountCreationPage.fill_password "password"
+    AccountCreationPage.select_month "2"
+    AccountCreationPage.select_date "5"
+    AccountCreationPage.select_year "1989"
+    AccountCreationPage.select_female_gender
+    AccountCreationPage.click_sign_up_submit
     Loopers.check_for_element(".//*[@id='reg_error_inner']", 10)
     try do
       assert(element?(:xpath,".//div[@id='reg_error_inner' and text()='Please choose a more secure password. It should be longer than 6 characters, unique to you, and difficult for others to guess.']"))
@@ -251,16 +251,16 @@ defmodule ElixirSdetExerciseTest do
   @tag :password_test
   test "Password too short error message" do
     good_email = Helpers.get_good_email
-    Helpers.fill_first_name "Test"
-    Helpers.fill_last_name "Testerson"
-    Helpers.fill_email_1 good_email
-    Helpers.fill_email_2 good_email
-    Helpers.fill_password "asdf"
-    Helpers.select_month "2"
-    Helpers.select_date "5"
-    Helpers.select_year "1991"
-    Helpers.select_female_gender
-    Helpers.click_sign_up_submit
+    AccountCreationPage.fill_first_name "Test"
+    AccountCreationPage.fill_last_name "Testerson"
+    AccountCreationPage.fill_email_1 good_email
+    AccountCreationPage.fill_email_2 good_email
+    AccountCreationPage.fill_password "asdf"
+    AccountCreationPage.select_month "2"
+    AccountCreationPage.select_date "5"
+    AccountCreationPage.select_year "1991"
+    AccountCreationPage.select_female_gender
+    AccountCreationPage.click_sign_up_submit
     Loopers.check_for_element(".//*[@id='reg_error_inner']", 10)
     try do
       assert(element?(:xpath,".//div[@id='reg_error_inner' and text()='Your password must be at least 6 characters long. Please try another.']"))
@@ -275,18 +275,18 @@ defmodule ElixirSdetExerciseTest do
   @tag :birthday_test
   test "Setting invalid birthday day" do
     good_email = Helpers.get_good_email
-    Helpers.fill_first_name "Test"
-    Helpers.fill_last_name "Testerson"
-    Helpers.fill_email_1 good_email
-    Helpers.fill_email_2 good_email
-    Helpers.fill_password "password123234"
-    Helpers.select_month "12"
-    Helpers.select_date "0"
-    Helpers.select_year "1988"
-    Helpers.click_sign_up_submit
-    Helpers.click_sign_up_submit
-    Helpers.click_sign_up_submit
-    Helpers.click_sign_up_submit
+    AccountCreationPage.fill_first_name "Test"
+    AccountCreationPage.fill_last_name "Testerson"
+    AccountCreationPage.fill_email_1 good_email
+    AccountCreationPage.fill_email_2 good_email
+    AccountCreationPage.fill_password "password123234"
+    AccountCreationPage.select_month "12"
+    AccountCreationPage.select_date "0"
+    AccountCreationPage.select_year "1988"
+    AccountCreationPage.click_sign_up_submit
+    AccountCreationPage.click_sign_up_submit
+    AccountCreationPage.click_sign_up_submit
+    AccountCreationPage.click_sign_up_submit
     try do
       assert element?(:xpath, ".//*[text()='Please enter your age.']")
     rescue
@@ -298,18 +298,18 @@ defmodule ElixirSdetExerciseTest do
   @tag :birthday_test
   test "Setting invalid birthday month" do
     good_email = Helpers.get_good_email
-    Helpers.fill_first_name "Test"
-    Helpers.fill_last_name "Testerson"
-    Helpers.fill_email_1 good_email
-    Helpers.fill_email_2 good_email
-    Helpers.fill_password "password123234"
-    Helpers.select_month "0"
-    Helpers.select_date "31"
-    Helpers.select_year "1966"
-    Helpers.click_sign_up_submit
-    Helpers.click_sign_up_submit
-    Helpers.click_sign_up_submit
-    Helpers.click_sign_up_submit
+    AccountCreationPage.fill_first_name "Test"
+    AccountCreationPage.fill_last_name "Testerson"
+    AccountCreationPage.fill_email_1 good_email
+    AccountCreationPage.fill_email_2 good_email
+    AccountCreationPage.fill_password "password123234"
+    AccountCreationPage.select_month "0"
+    AccountCreationPage.select_date "31"
+    AccountCreationPage.select_year "1966"
+    AccountCreationPage.click_sign_up_submit
+    AccountCreationPage.click_sign_up_submit
+    AccountCreationPage.click_sign_up_submit
+    AccountCreationPage.click_sign_up_submit
     try do
       assert element?(:xpath, ".//*[text()='Please enter your age.']")
     rescue
@@ -321,27 +321,27 @@ defmodule ElixirSdetExerciseTest do
   @tag :birthday_test
   test "Setting age field to 400" do
     good_email = Helpers.get_good_email
-    Helpers.fill_first_name "Test"
-    Helpers.fill_last_name "Testerson"
-    Helpers.fill_email_1 good_email
-    Helpers.fill_email_2 good_email
-    Helpers.fill_password "password123234"
-    Helpers.select_month "12"
-    Helpers.select_date "31"
-    Helpers.select_year "0"
-    Helpers.click_sign_up_submit
-    Helpers.click_sign_up_submit
-    Helpers.click_sign_up_submit
-    Helpers.click_sign_up_submit
+    AccountCreationPage.fill_first_name "Test"
+    AccountCreationPage.fill_last_name "Testerson"
+    AccountCreationPage.fill_email_1 good_email
+    AccountCreationPage.fill_email_2 good_email
+    AccountCreationPage.fill_password "password123234"
+    AccountCreationPage.select_month "12"
+    AccountCreationPage.select_date "31"
+    AccountCreationPage.select_year "0"
+    AccountCreationPage.click_sign_up_submit
+    AccountCreationPage.click_sign_up_submit
+    AccountCreationPage.click_sign_up_submit
+    AccountCreationPage.click_sign_up_submit
     try do
-      Helpers.fill_out_age_input 400
+      AccountCreationPage.fill_out_age_input 400
     rescue
       _error ->
         Helpers.grab_screenshot "age_input_missing_catch_shot_"
     after
-      Helpers.fill_out_age_input 400
+      AccountCreationPage.fill_out_age_input 400
     end
-    Helpers.click_sign_up_submit
+    AccountCreationPage.click_sign_up_submit
     try do
       assert element?(:xpath, ".//*[text()='Please enter your age.']")
     rescue
@@ -355,16 +355,16 @@ defmodule ElixirSdetExerciseTest do
   @tag :birthday_test
   test "Invalid Birthday from future message with bad data" do
     good_email = Helpers.get_good_email
-    Helpers.fill_first_name "Test"
-    Helpers.fill_last_name "Testerson"
-    Helpers.fill_email_1 good_email
-    Helpers.fill_email_2 good_email
-    Helpers.fill_password "password123234"
-    Helpers.select_month "12"
-    Helpers.select_date "31"
-    Helpers.select_year "2020"
-    Helpers.select_female_gender
-    Helpers.click_sign_up_submit
+    AccountCreationPage.fill_first_name "Test"
+    AccountCreationPage.fill_last_name "Testerson"
+    AccountCreationPage.fill_email_1 good_email
+    AccountCreationPage.fill_email_2 good_email
+    AccountCreationPage.fill_password "password123234"
+    AccountCreationPage.select_month "12"
+    AccountCreationPage.select_date "31"
+    AccountCreationPage.select_year "2020"
+    AccountCreationPage.select_female_gender
+    AccountCreationPage.click_sign_up_submit
     Loopers.check_for_element(".//*[text()='It looks like you entered the wrong info. Please be sure to use your real birthday.']", 6)
     try do
       assert element?(:xpath, ".//*[text()='It looks like you entered the wrong info. Please be sure to use your real birthday.']")
@@ -379,15 +379,15 @@ defmodule ElixirSdetExerciseTest do
   @tag :gender_test
   test "Not selecting Gender error message" do
     good_email = Helpers.get_good_email
-    Helpers.fill_first_name "Test"
-    Helpers.fill_last_name "Testerson"
-    Helpers.fill_email_1 good_email
-    Helpers.fill_email_2 good_email
-    Helpers.fill_password "password123234"
-    Helpers.select_month "12"
-    Helpers.select_date "31"
-    Helpers.select_year "1967"
-    Helpers.click_sign_up_submit
+    AccountCreationPage.fill_first_name "Test"
+    AccountCreationPage.fill_last_name "Testerson"
+    AccountCreationPage.fill_email_1 good_email
+    AccountCreationPage.fill_email_2 good_email
+    AccountCreationPage.fill_password "password123234"
+    AccountCreationPage.select_month "12"
+    AccountCreationPage.select_date "31"
+    AccountCreationPage.select_year "1967"
+    AccountCreationPage.click_sign_up_submit
     Loopers.check_for_element(".//*[text()='Please choose a gender. You can change who can see this later.']", 6)
     try do
       assert element?(:xpath, ".//*[text()='Please choose a gender. You can change who can see this later.']")
@@ -402,16 +402,16 @@ defmodule ElixirSdetExerciseTest do
   @tag :gender_test
   test "Not selecting pronoun error message" do
     good_email = Helpers.get_good_email
-    Helpers.fill_first_name "Test"
-    Helpers.fill_last_name "Testerson"
-    Helpers.fill_email_1 good_email
-    Helpers.fill_email_2 good_email
-    Helpers.fill_password "password123234"
-    Helpers.select_month "12"
-    Helpers.select_date "31"
-    Helpers.select_year "1967"
-    Helpers.select_custom_gender "0"
-    Helpers.click_sign_up_submit
+    AccountCreationPage.fill_first_name "Test"
+    AccountCreationPage.fill_last_name "Testerson"
+    AccountCreationPage.fill_email_1 good_email
+    AccountCreationPage.fill_email_2 good_email
+    AccountCreationPage.fill_password "password123234"
+    AccountCreationPage.select_month "12"
+    AccountCreationPage.select_date "31"
+    AccountCreationPage.select_year "1967"
+    AccountCreationPage.select_custom_gender "0"
+    AccountCreationPage.click_sign_up_submit
     Loopers.check_for_element(".//*[text()='Please select your pronoun.']", 6)
     try do
       assert element?(:xpath, ".//*[text()='Please select your pronoun.']")
